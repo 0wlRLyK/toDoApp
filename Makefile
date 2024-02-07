@@ -46,3 +46,6 @@ shell:
 
 django_shell:
 	docker-compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) exec web python manage.py shell
+
+django_manage:
+	docker-compose --env-file $(ENV_FILE) -f $(COMPOSE_FILE) -p $(PROJECT_NAME) exec web python manage.py $(cmd)
