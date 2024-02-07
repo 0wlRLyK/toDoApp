@@ -3,7 +3,7 @@ from django.apps import AppConfig
 
 class TodoConfig(AppConfig):
     default_auto_field = "django.db.models.BigAutoField"
-    name = "todo"
+    name = "apps.todo"
 
     def ready(self):
-        import todo.signals  # noqa
+        import apps.todo.signals  # noqa
