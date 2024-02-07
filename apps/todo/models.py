@@ -9,6 +9,9 @@ class TasksList(models.Model):
         User, on_delete=models.CASCADE, related_name="tasks_list"
     )
 
+    def __str__(self):
+        return f"{self.user.username} tasks list"
+
 
 class Task(models.Model):
     class Categories(models.TextChoices):
@@ -23,3 +26,6 @@ class Task(models.Model):
     category = models.CharField(max_length=20, choices=Categories.choices)
     due_date = models.DateField()
     is_completed = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.pk} - {self.description}"
