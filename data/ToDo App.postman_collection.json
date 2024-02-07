@@ -1,0 +1,214 @@
+{
+	"info": {
+		"_postman_id": "7027e77d-a026-4d2f-9e5d-9faa0d1a742c",
+		"name": "ToDo App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "22834557"
+	},
+	"item": [
+		{
+			"name": "Auth token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzA3MzI0OTkyLCJpYXQiOjE3MDczMjQ2OTIsImp0aSI6IjE3MjdkYjcwYWZmMjRjZDhhNzNiZmMxNzBkYTNjYTNiIiwidXNlcl9pZCI6MX0.cvfncmNMlqfepDrj2bQtfHdtTshQSAsB9pl_yfC5z0s"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "username",
+							"value": "admin",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "admin",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/todo/"
+			},
+			"response": []
+		},
+		{
+			"name": "Create task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{auth}}"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "description",
+							"value": "Test description",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "work",
+							"type": "text"
+						},
+						{
+							"key": "due_date",
+							"value": "2024-02-07",
+							"type": "text"
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/todo/"
+			},
+			"response": []
+		},
+		{
+			"name": "Tasks list",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{auth}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/api/todo/"
+			},
+			"response": []
+		},
+		{
+			"name": "Retrieve particular task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{auth}}"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "http://localhost:8000/api/todo/3/"
+			},
+			"response": []
+		},
+		{
+			"name": "Partial update particular task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{auth}}"
+					}
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "description",
+							"value": "Test description 1",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "work",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "due_date",
+							"value": "2024-02-07",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/todo/3/"
+			},
+			"response": []
+		},
+		{
+			"name": "Update particular task",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "{{auth}}"
+					}
+				},
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "description",
+							"value": "Test description 1",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "work",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "due_date",
+							"value": "2024-02-07",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": "http://localhost:8000/api/todo/3/"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"const loginUrl = pm.environment.get(\"host\") + \"api/auth/token/\";",
+					"pm.sendRequest({",
+					"    url: loginUrl,",
+					"    method: 'POST',",
+					"    header: {",
+					"        'content-type': 'application/json'",
+					"    },",
+					"    body: {",
+					"        mode: 'raw',",
+					"        raw: JSON.stringify({\"username\": pm.environment.get(\"username\"),",
+					"\t                         \"password\": pm.environment.get(\"password\") })",
+					"        ",
+					"    }",
+					"}, function (err, res) {",
+					"    pm.environment.set(\"auth\",  res.json().access);",
+					"});"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
