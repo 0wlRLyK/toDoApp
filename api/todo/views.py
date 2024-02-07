@@ -1,6 +1,8 @@
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.viewsets import ModelViewSet
 
+from api.todo.filters import TaskFilter
 from api.todo.serializers import TaskSerializer
 from apps.todo.models import Task, TasksList
 
@@ -9,6 +11,8 @@ class TasksViewSet(ModelViewSet):
     permission_classes = [IsAuthenticated]
     serializer_class = TaskSerializer
     queryset = Task.objects.all()
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = TaskFilter
 
     def get_queryset(self):
         queryset = super().get_queryset()
