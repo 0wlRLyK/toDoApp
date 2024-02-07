@@ -13,7 +13,6 @@ services:
     depends_on:
       - database
     environment:
-      - DJANGO_MAIN_APP=toDoApp
       - SECRET_KEY=${SECRET_KEY}
       - POSTGRES_DB=${POSTGRES_DB}
       - POSTGRES_USER=${POSTGRES_USER}
@@ -21,6 +20,8 @@ services:
       - POSTGRES_HOST=${POSTGRES_HOST}
       - POSTGRES_PORT=${POSTGRES_PORT}
       - POSTGRES_HOST_AUTH_METHOD=password
+      - CELERY_BROKER_URL=${CELERY_BROKER_URL}
+      - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND}
 
   database:
     image: postgres:latest
@@ -33,6 +34,22 @@ services:
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
     ports:
       - "5435:5432"
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+
+  celery:
+    <<: *web
+    image: web-celery
+    restart: unless-stopped
+    depends_on:
+      - redis
+    volumes:
+      - ..:/project:z
+    ports: [ ]
+    command: celery -A toDoApp.celery worker --beat --loglevel=info
 
 volumes:
   postgres_data:
